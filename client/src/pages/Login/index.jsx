@@ -1,15 +1,16 @@
 import styles from './index.module.less'
 import logo from '../../assets/logo.png'
-import { Form, Button, Input } from 'react-vant';
+import { Form, Button, Input, Toast } from 'react-vant';
 import axios from  '../../api/index'
 
 export default function Login() {
   const [form] = Form.useForm()
 
   const onFinish = values => {
-    console.log(values)
+    // console.log(values)
     axios.post('/user/login', values).then(res => {
-      console.log(res)
+      console.log(res.data);
+      
     })
   }
   return (
