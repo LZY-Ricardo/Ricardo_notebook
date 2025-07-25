@@ -1,25 +1,35 @@
-import styles from './index.module.less'
 import logo from '../../assets/logo.png'
-import { Form, Button, Input, Toast } from 'react-vant';
-import axios from  '../../api/index'
+import styles from './index.module.less'
+import { Button, Input, Form } from 'react-vant'
+import axios from '../../api'
+import toast from 'react-hot-toast';
+import {useNavigate} from 'react-router'
 
 export default function Login() {
   const [form] = Form.useForm()
 
+  const navigate = useNavigate()
+
   const onFinish = values => {
-    // console.log(values)
     axios.post('/user/login', values).then(res => {
-      console.log(res.data);
-      
+      toast.success('登录成功')
+      console.log(res);
+      // 登录成功，将 token 存储在 localStorage 中
+      localStorage.setItem('access_token', res.access_token)
+      localStorage.setItem('refresh_token', res.refresh_token)
+      navigate('/noteClass')
     })
   }
+
   return (
     <div className={styles.login}>
       <h1 className={styles.title}>登录</h1>
+
       <div className={styles['login-wrapper']}>
         <div className={styles.avatar}>
-          <img className={styles['avatar-img']} src={logo} alt="logo" />
+          <img className={styles['avatar-img']} src={logo} alt="" />
         </div>
+
         <Form
           form={form}
           onFinish={onFinish}
@@ -49,9 +59,9 @@ export default function Login() {
           </Form.Item>
         </Form>
       </div>
-      <p className={styles['login-tip']}>
-        还没有账号？点这里注册
-      </p>
+
+      <p className={styles['login-tip']}>没有账号？点这里注册</p>
+
     </div>
   )
 }

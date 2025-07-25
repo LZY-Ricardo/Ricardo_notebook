@@ -13,7 +13,7 @@ react-vant
 less
 
 # html 标签样式重置
-react.
+reset.css
 
 # 项目梳理
 - 安装路由 react-router-dom
@@ -24,5 +24,14 @@ react.
 2. 开发登录页面
  - css 样式隔离 xxx.module.less
  - 发登录请求 axios  (XMLHttpRequest, fetch)
-
  axios.post('/login')
+
+3. 因为react-vant Toast 组件不兼容react19, 所以采用了第三方的 react-hot-toast 组件
+
+4. 登录鉴权
+ - 当用户未登录, 就访问首页时, 且首页在加载时会向后端发送请求
+ - 后端在登录接口中生成一个令牌, 将令牌一起返回给前端, 前端将令牌进行浏览器本地保存
+ - 前端必须在后续所有的请求中都必须携带该令牌供后端校验, 如果后端校验不通过, 则返回 401 状态码, 前端收到 401 状态码后, 就知道用户未登录, 就跳转到登录页面
+
+ - 以上功能实现了鉴权, 但是token在规定时间后会过期, 过期后就需要重新登录, 体验很差。 实现一个无感刷新 token 的效果
+ - 后端在登录接口返回一个 长token 和 一个 短token, 短token 用来做权限的校验, 长token 用来在 短token 失效后重新获取 新的短token 和 新的长token替代长token

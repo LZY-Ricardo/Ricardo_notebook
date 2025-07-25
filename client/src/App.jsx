@@ -1,11 +1,13 @@
 import WrapperRouter from './Router'
-import Toast from './components/toast'
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function App() {
+
   return (
     <>
       <WrapperRouter />
-      <Toast />
+      <Toaster />
     </>
   )
+  
 }
