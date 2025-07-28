@@ -35,6 +35,21 @@ const userLogin = async (username, password) => {
     return allServices.query(_sql)
 }
 
+// 查找账号是否存在
+const findUser = async (username) => {
+    const _sql = `select * from user where username='${username}';`
+    return allServices.query(_sql)
+}
+
+// 注册要执行的函数
+const userRegister = async (date) => {
+    const {nickname, username, password, create_time} = date
+    const _sql = `insert into user (nickname, username, password, create_time) values ('${nickname}', '${username}', '${password}', '${create_time}');`
+    return allServices.query(_sql)
+}
+
 module.exports = {
-    userLogin
+    userLogin,
+    findUser,
+    userRegister,
 }

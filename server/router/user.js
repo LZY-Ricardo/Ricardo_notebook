@@ -1,14 +1,18 @@
 const Router = require('@koa/router')
-const { userLogin } = require('../controllers')
+const { userLogin, findUser, userRegister } = require('../controllers')
 const router = new Router()
 const { sign, verify, refreshVerify } = require('../utils/jwt')
+const { escape } = require('../utils/security')
 
 router.prefix('/user') // 路由前缀 所有的路由都会添加这个前缀
 
 router.post('/login', async (ctx) => {
     // 1. 获取请求体中的账号和密码
     // post 请求携带的参数都在请求体中
-    const { username, password } = ctx.request.body
+    let { username, password } = ctx.request.body
+    // 注册时已经转译了 登录时需要转译
+    username = escape(username)
+    password = escape(password)
     // console.log(username, password);
     // 2. 检验账号密码是否合法
     // 去数据库查询账号密码是否正确
@@ -89,5 +93,63 @@ router.post('/refresh', (ctx) => {
     }
 })
 
+// 注册
+router.post('/register', async (ctx) => {
+    let { nickname, username, password } = ctx.request.body
+    if (!nickname || !username || !password) {
+        ctx.body = {
+            code: '0',
+            msg: '账号密码昵称不能为空',
+        }
+    }
+
+    // 转译标签 防止sql 注入
+    username = escape(username)
+    nickname = escape(nickname)
+    password = escape(password)
+
+    // 检验账号是否存在
+    try{
+        // 检测账号是否存在
+        const res = await findUser(username)
+        // console.log(res);
+        if (res.length) {
+            ctx.body = {
+                code: '0',
+                msg: '账号已存在',
+                data: {}
+            }
+            return
+        }
+        const create_time = Date.now()
+        // 数据库写入
+        const result = await userRegister({nickname, username, password, create_time})
+        console.log(result);
+        if (result.affectedRows) {
+            ctx.body = {
+                code: '1',
+                msg: '注册成功',
+                data: {
+                    id: result.insertId,
+                    nickname,
+                    username,
+                    create_time,
+                }
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '注册失败',
+                data: {}
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '服务器异常',
+            data: error
+        }
+    }
+})
 
 module.exports = router

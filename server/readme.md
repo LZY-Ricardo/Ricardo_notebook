@@ -24,4 +24,12 @@ koa
  - 路由: /user/login
  - 方法: post
  - 请求体: username, password
- - 响应体: { code: 1111, msg: '登录成功', data: { xxx } }
+ - 响应体: { code: 1, msg: '登录成功', data: { xxx } }
+
+2. 打造注册接口
+ - 路由: /user/register
+ - 方法: post
+ - 请求体: username, password, nickname
+ - 响应体: { code: 1, msg: '注册成功', data: { xxx } }
+
+ - 防 sql 注入: username = '%script%alert{username}%/script%'

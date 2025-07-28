@@ -15,6 +15,15 @@ less
 # html 标签样式重置
 reset.css
 
+# 路由传参
+1. navigate('/home?id=1') useSearchParams() // 获取当前路由的信息
+2. navigate('/home/1') 配置路由时声明 path: '/home/:id' useParams() // 获取当前路由的参数
+3. navigate('/home/1', {         useLocation()  // 获取当前路由的信息 不会在url中显示参数
+    state: {
+        id: 1,
+    }
+   })
+
 # 项目梳理
 - 安装路由 react-router-dom
 1. 集中式路由配置
