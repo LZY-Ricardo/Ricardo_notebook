@@ -48,8 +48,29 @@ const userRegister = async (date) => {
     return allServices.query(_sql)
 }
 
+// 根据类型查找日记列表数据
+const findNoteListByType = async (userId, note_type) => {
+    const _sql = `select * from note where user_id='${userId}' and note_type='${note_type}';`
+    return allServices.query(_sql)
+}
+
+// 根据id查找日记详情
+const findNoteDetailById = async (id) => {
+    const _sql = `select * from note where id='${id}';`
+    return allServices.query(_sql)
+}
+
+// 根据id查找用户
+const findUserById = async (id) => {
+    const _sql = `select * from user where id='${id}';`
+    return allServices.query(_sql)
+}
+
 module.exports = {
     userLogin,
     findUser,
     userRegister,
+    findNoteListByType,
+    findNoteDetailById,
+    findUserById,
 }

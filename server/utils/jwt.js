@@ -6,7 +6,7 @@ function sign(options, time) {
     })
 }
 
-function verify() {
+function verify() { // 返回一个函数体
     return async (ctx, next) => {
         const token = ctx.headers.authorization
         if (token) {
@@ -14,6 +14,7 @@ function verify() {
                 const decoded = jwt.verify(token, '666')
                 // console.log(decoded);
                 if (decoded.id) { // 合法
+                    ctx.userId = decoded.id
                     await next()
                 }
             } catch (error) {
