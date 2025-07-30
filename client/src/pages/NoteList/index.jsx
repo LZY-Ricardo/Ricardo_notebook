@@ -55,7 +55,7 @@ export default function NoteList() {
                                     <div className={styles['img']}>
                                         <img src={item.note_img} alt="" />
                                     </div>
-                                    <div>
+                                    <div className={styles['content']}>
                                         <h3 className={styles['title']}>{item.note_title}</h3>
                                         <p className={styles['time']}>{formateDate(item.update_time)}</p>
                                     </div>

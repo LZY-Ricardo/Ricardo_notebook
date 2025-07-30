@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-vant/icons": "^0.1.0",
+    "@wangeditor/editor-for-react": "^1.0.6",
     "axios": "^1.11.0",
     "lib-flexible": "^0.3.2",
     "react": "^19.1.0",

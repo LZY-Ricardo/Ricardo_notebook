@@ -66,6 +66,13 @@ const findUserById = async (id) => {
     return allServices.query(_sql)
 }
 
+// 发布日记
+const publishNote = async (data) => {
+    const {user_id, note_title, note_content, note_type, note_img, update_time, create_time} = data
+    const _sql = `insert into note (user_id, note_title, note_content, note_type, note_img, update_time, create_time) values ('${user_id}', '${note_title}', '${note_content}', '${note_type}', '${note_img}', '${update_time}', '${create_time}');`
+    return allServices.query(_sql)
+}
+
 module.exports = {
     userLogin,
     findUser,
@@ -73,4 +80,5 @@ module.exports = {
     findNoteListByType,
     findNoteDetailById,
     findUserById,
+    publishNote,
 }

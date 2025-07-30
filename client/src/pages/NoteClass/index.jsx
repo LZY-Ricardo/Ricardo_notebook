@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from '../../api/index.js'
 import styles from './index.module.less'
 import { WapNav, Edit, LikeO, Search } from '@react-vant/icons'
 import Menu from '@/components/Menu'
@@ -45,7 +44,7 @@ export default function NoteClass() {
             <WapNav className={styles['icon']} />
           </div>
           <div>
-            <Edit className={styles['icon']} />
+            <Edit className={styles['icon']} onClick={() => navigate('/notePublic')}/>
             <LikeO className={styles['icon']} />
             <Search className={styles['icon']} />
           </div>
