@@ -8,6 +8,7 @@ const Register = React.lazy(() => import('../pages/Register'))
 const NoteList = React.lazy(() => import('../pages/NoteList'))
 const NoteDetail = React.lazy(() => import('../pages/NoteDetail'))
 const NotePublic = React.lazy(() => import('../pages/NotePublic'))
+const Search = React.lazy(() => import('../pages/Search'))
 
 const routes = [
     {
@@ -37,6 +38,10 @@ const routes = [
     {
         path: '/notePublic',
         element: <NotePublic />
+    },
+    {
+        path: '/search',
+        element: <Search />
     }
 ]
 

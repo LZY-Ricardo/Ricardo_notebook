@@ -73,6 +73,24 @@ const publishNote = async (data) => {
     return allServices.query(_sql)
 }
 
+// 根据标题查找日记
+const findNoteByTitle = async (title) => {
+    const _sql = `select * from note where note_title like '%${title}%';`
+    return allServices.query(_sql)
+}
+
+// 收藏日记
+const loveNote = async (id) => {
+    const _sql = `update note set love = 1 where id = '${id}';`
+    return allServices.query(_sql)
+}
+
+// 取消收藏日记
+const unLoveNote = async (id) => {
+    const _sql = `update note set love = 0 where id = '${id}';`
+    return allServices.query(_sql)
+}
+
 module.exports = {
     userLogin,
     findUser,
@@ -81,4 +99,7 @@ module.exports = {
     findNoteDetailById,
     findUserById,
     publishNote,
+    findNoteByTitle,
+    loveNote,
+    unLoveNote
 }

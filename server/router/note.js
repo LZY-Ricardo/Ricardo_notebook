@@ -1,7 +1,7 @@
 const Router = require('@koa/router')
 const router = new Router()
 const { verify } = require('../utils/jwt.js')
-const { findNoteListByType, findNoteDetailById, findUserById, publishNote } = require('../controllers/index.js')
+const { findNoteListByType, findNoteDetailById, findUserById, publishNote, findNoteByTitle, loveNote, unLoveNote } = require('../controllers/index.js')
 
 router.get('/findNoteListByType', verify(), async (ctx) => {
     const { note_type } = ctx.request.query // 从 url 后面解析参数
@@ -98,5 +98,92 @@ router.post('/note-publish', verify(), async (ctx) => {
         }
     }
 })
+
+router.get('/findNoteByTitle', verify(), async (ctx) => {
+    const { title } = ctx.request.query
+    console.log(title);
+    try {
+        const res = await findNoteByTitle(title)
+        console.log(res);
+        if (res.length > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '查询成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '暂无数据',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '查询失败',
+            data: error
+        }
+    }
+})
+
+router.post('/likeNote', verify(), async (ctx) => {
+    const { id } = ctx.request.body
+    console.log(id);
+    
+    try {
+        console.log(ctx.userId);
+        
+        const res = await loveNote(id)
+        console.log(res);
+        
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '收藏成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '收藏失败',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '收藏失败',
+            data: error
+        }
+    }
+})
+
+router.post('/unlikeNote', verify(), async (ctx) => {
+    const { id } = ctx.request.body
+    try {
+        const res = await unLoveNote(id)
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '取消收藏成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '取消收藏失败',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '取消收藏失败',
+            data: error
+        }
+    }
+})
+
 
 module.exports = router

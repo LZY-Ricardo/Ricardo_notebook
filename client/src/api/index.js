@@ -1,7 +1,7 @@
 import axios from 'axios'
 import toast from 'react-hot-toast';
 
-axios.defaults.baseURL = 'http://120.55.48.68:3000'
+axios.defaults.baseURL = 'http://localhost:3000'// 120.55.48.68
 // 告诉浏览器，如果发送的是 post请求，那么后端一定会返回 json 格式的数据，让浏览器以解析 json 的方式来解析响应提体
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
