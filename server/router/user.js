@@ -1,5 +1,5 @@
 const Router = require('@koa/router')
-const { userLogin, findUser, userRegister } = require('../controllers')
+const { userLogin, findUser, userRegister, userUpdate, findUserById } = require('../controllers')
 const router = new Router()
 const { sign, verify, refreshVerify } = require('../utils/jwt')
 const { escape } = require('../utils/security')
@@ -29,7 +29,7 @@ router.post('/login', async (ctx) => {
             }
             const access_token = sign(data, '1h')
             const refresh_token = sign(data, '7d')
-            
+
             ctx.body = {
                 code: '1',
                 msg: '登录成功',
@@ -58,7 +58,7 @@ router.get('/test', verify(), (ctx) => {
     ctx.body = {
         code: '1',
         msg: '测试成功',
-        data: {msg: '测试成功'},
+        data: { msg: '测试成功' },
     }
 })
 
@@ -109,7 +109,7 @@ router.post('/register', async (ctx) => {
     password = escape(password)
 
     // 检验账号是否存在
-    try{
+    try {
         // 检测账号是否存在
         const res = await findUser(username)
         // console.log(res);
@@ -123,7 +123,7 @@ router.post('/register', async (ctx) => {
         }
         const create_time = Date.now()
         // 数据库写入
-        const result = await userRegister({nickname, username, password, create_time})
+        const result = await userRegister({ nickname, username, password, create_time })
         console.log(result);
         if (result.affectedRows) {
             ctx.body = {
@@ -148,6 +148,62 @@ router.post('/register', async (ctx) => {
             code: '-1',
             msg: '服务器异常',
             data: error
+        }
+    }
+})
+
+router.post('/update', verify(), async (ctx) => {
+    const userId = ctx.userId
+    console.log('userId:', userId);
+
+    // 检验参数
+    let { nickname, username, password } = ctx.request.body
+    console.log('接收到的参数:', { nickname, username, password });
+
+    if (!nickname && !username && !password) {
+        ctx.body = {
+            code: '0',
+            msg: '账号密码昵称不能为空',
+        }
+        return
+    }
+
+    // 转译标签 防止sql 注入
+    username = escape(username)
+    nickname = escape(nickname)
+    password = escape(password)
+    console.log('处理后的参数:', { userId, nickname, username, password });
+
+    const result = await userUpdate({ userId, nickname, username, password })
+    console.log('数据库更新结果:', result);
+
+    const res = await findUserById(userId)
+    console.log('查询结果:', res);
+
+    let data = {
+        id: res[0].id,
+        username: res[0].username,
+        nickname: res[0].nickname,
+        createTime: res[0].create_time,
+    }
+
+    const access_token = sign(data, '1h')
+    const refresh_token = sign(data, '7d')
+
+
+    if (result.affectedRows) {
+        ctx.body = {
+            code: '1',
+            msg: '修改成功',
+            data,
+            access_token,
+            refresh_token,
+        }
+    } else {
+        ctx.body = {
+            code: '0',
+            msg: '修改失败',
+            data: {}
         }
     }
 })

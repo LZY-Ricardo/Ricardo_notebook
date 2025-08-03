@@ -1,7 +1,7 @@
 const Router = require('@koa/router')
 const router = new Router()
 const { verify } = require('../utils/jwt.js')
-const { findNoteListByType, findNoteDetailById, findUserById, publishNote, findNoteByTitle, loveNote, unLoveNote } = require('../controllers/index.js')
+const { findNoteListByType, findNoteDetailById, findUserById, publishNote, findNoteByTitle, loveNote, unLoveNote, updateNote, deleteNote, findLikeNoteList, findAllNotes } = require('../controllers/index.js')
 
 router.get('/findNoteListByType', verify(), async (ctx) => {
     const { note_type } = ctx.request.query // 从 url 后面解析参数
@@ -185,5 +185,118 @@ router.post('/unlikeNote', verify(), async (ctx) => {
     }
 })
 
+router.post('/updateNote', verify(), async (ctx) => {
+    const {id, title, content, type, img} = ctx.request.body
+    try {
+        const res = await updateNote(id, title, content, type, img)
+        console.log(res);
+        
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '更新成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '更新失败',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '更新失败',
+            data: error
+        }
+    }
+})
+
+router.post('/deleteNote', verify(), async (ctx) => {
+    const {id} = ctx.request.body
+    try {
+        const res = await deleteNote(id)
+        if (res.affectedRows > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '删除成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '删除失败',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '删除失败',
+            data: error
+        }
+    }
+})
+
+router.get('/noteLike', verify(), async (ctx) => {
+    const userId = ctx.userId
+    console.log(userId);
+    
+    try {
+        console.log(userId);
+        
+        const res = await findLikeNoteList(userId)
+        console.log(res);
+        
+        if (res.length > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '查询成功',
+                data: res.map(item => ({
+                    ...item,
+                }))
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '暂无数据',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '查询失败',
+            data: error
+        }
+    }
+})
+
+router.get('/findAllNotes', verify(), async (ctx) => {
+    const userId = ctx.userId
+    try {
+        const res = await findAllNotes(userId)
+        if (res.length > 0) {
+            ctx.body = {
+                code: '1',
+                msg: '查询成功',
+                data: res
+            }
+        } else {
+            ctx.body = {
+                code: '0',
+                msg: '暂无数据',
+                data: []
+            }
+        }
+    } catch (error) {
+        ctx.body = {
+            code: '-1',
+            msg: '查询失败',
+            data: error
+        }
+    }
+})
 
 module.exports = router

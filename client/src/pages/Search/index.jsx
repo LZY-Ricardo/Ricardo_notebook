@@ -9,19 +9,48 @@ import { useNavigate } from 'react-router';
 
 export default function SearchPage() {
     const [value, setValue] = useState('');
-    const [history, setHistory] = useState(['sakura', '小龙虾', '樱花']);
+    const [history, setHistory] = useState([]);
     const [result, setResult] = useState([]);
     const navigate = useNavigate();
+    
+    // 从localStorage加载搜索历史
+    useEffect(() => {
+        const savedHistory = localStorage.getItem('searchHistory');
+        if (savedHistory) {
+            setHistory(JSON.parse(savedHistory));
+        }
+    }, []);
 
     const onSearch = () => {
         // 去除搜索关键词前后的空格
         const trimmedValue = value.trim();
-        // console.log(value);
+        if (!trimmedValue) return; // 不搜索空字符串
+                // console.log(value);
         // React 状态更新是异步的，直接打印 history 不会包含新添加的值
-        const newHistory = [...history, trimmedValue];
-        setHistory(newHistory); // 异步
+        // const newHistory = [...history, trimmedValue];
+        // setHistory(newHistory); // 异步
         // console.log(history);
         // console.log(newHistory); // 打印包含新值的数组
+        
+        // 如果搜索词已存在于历史记录中，先移除它
+        let newHistory = history.filter(item => item !== trimmedValue)
+        
+        // 将新的搜索词添加到历史记录的开头
+        newHistory = [trimmedValue, ...newHistory];
+        
+        // 限制历史记录最多20条
+        if (newHistory.length > 20) {
+            newHistory = newHistory.slice(0, 20);
+        }
+        // console.log(newHistory);
+    
+        // 更新状态并保存到localStorage
+        setHistory(newHistory); // 异步
+        // React 状态更新是异步的，直接打印 history 不会包含新添加的值
+        // console.log(history); 
+        // console.log(newHistory);
+        localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+        
         getData(trimmedValue)
     }
 
@@ -55,13 +84,19 @@ export default function SearchPage() {
                     <div className={styles['title']}>
                         <div className={styles['left']}>搜索历史</div>
                         <div className={styles['right']}>
-                            <Delete onClick={() => { setHistory([]) }} />
+                            <Delete onClick={() => { 
+                                setHistory([]);
+                                localStorage.removeItem('searchHistory');
+                            }} />
                         </div>
                     </div>
                     <div className={styles['content']}>
                         {history.map((item, index) => {
                             return (
-                                <div className={styles['item']} key={index} onClick={() => { getData(item) }}>
+                                <div className={styles['item']} key={index} onClick={() => { 
+                                    setValue(item); // 更新搜索框的值
+                                    getData(item);
+                                }}>
                                     {item}
                                 </div>
                             )

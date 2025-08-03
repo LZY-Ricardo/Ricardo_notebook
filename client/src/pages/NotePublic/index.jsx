@@ -46,6 +46,9 @@ export default function NotePublic() {
     }).then(res => {
       console.log(res);
     })
+    setTimeout(() => {
+      navigate(-1)
+    }, 1000);
   }
 
   const onSelect = (action) => {
@@ -109,7 +112,7 @@ export default function NotePublic() {
 
       <div className={styles['btn']} onClick={onPublish}>
         <Cell>
-          <Button type='primary' block>发布日记</Button>
+          <Button type='primary' block>上传日记</Button>
         </Cell>
       </div>
     </div>

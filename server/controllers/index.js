@@ -91,6 +91,37 @@ const unLoveNote = async (id) => {
     return allServices.query(_sql)
 }
 
+// 更新日记
+const updateNote = async (id, title, content, type, img) => {
+    const _sql = `update note set note_title = '${title}', note_content = '${content}', note_type = '${type}', note_img = '${img}' where id = '${id}';`
+    return allServices.query(_sql)
+}
+
+// 删除日记
+const deleteNote = async (id) => {
+    const _sql = `delete from note where id = '${id}';`
+    return allServices.query(_sql)
+}
+
+// 查找用户收藏的日记
+const findLikeNoteList = async (userId) => {
+    const _sql = `select * from note where love = 1 and user_id = '${userId}';`
+    return allServices.query(_sql)
+}
+
+// 查找用户的所有日记
+const findAllNotes = async (userId) => {
+    const _sql = `select * from note where user_id = '${userId}';`
+    return allServices.query(_sql)
+}
+
+// 更新用户
+const userUpdate = async (data) => {
+    const {userId, nickname, username, password} = data
+    const _sql = `update user set nickname = '${nickname}', username = '${username}', password = '${password}' where id = '${userId}';`
+    return allServices.query(_sql)
+}
+
 module.exports = {
     userLogin,
     findUser,
@@ -101,5 +132,10 @@ module.exports = {
     publishNote,
     findNoteByTitle,
     loveNote,
-    unLoveNote
+    unLoveNote,
+    updateNote,
+    deleteNote,
+    findLikeNoteList,
+    findAllNotes,
+    userUpdate
 }

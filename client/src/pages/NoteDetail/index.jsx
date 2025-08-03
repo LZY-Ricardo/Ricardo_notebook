@@ -7,7 +7,7 @@ import { createFromIconfontCN } from '@react-vant/icons'
 import { toast } from 'react-hot-toast';
 
 const IconFont = createFromIconfontCN(
-  'https://at.alicdn.com/t/c/font_4985740_pqnpstaisc.js'
+  'https://at.alicdn.com/t/c/font_4985740_hhxb3gm8gtj.js'
 )
 
 export default function NoteDetail() {
@@ -17,6 +17,16 @@ export default function NoteDetail() {
   const navigate = useNavigate();
   const [noteDetail, setNoteDetail] = useState(null)
   const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  
+  const onDelete = async () => {
+    await axios.post('/deleteNote', {
+      id: noteDetail?.id
+    })
+    toast.success('删除成功')
+    setTimeout(() => {
+      navigate(-1)
+    }, 1000);
+  }
 
   useEffect(() => {
     axios.get(`/findNoteDetailById?id=${id}`).then(res => {
@@ -64,6 +74,19 @@ export default function NoteDetail() {
         onClick={onLike}
       >
         <IconFont name='icon-a-shoucang-yishoucang' />
+      </div>
+
+      <div className={styles['note-edit']} onClick={() => navigate('/noteEdit?id=' + id)}>
+        <IconFont name='icon-bianji' />
+      </div>
+
+      <div
+        className={styles['note-delete']}
+        onClick={() =>
+          onDelete()
+        }
+      >
+        <IconFont name='icon-shanchu' />
       </div>
 
       <div className={styles['note-img']}>

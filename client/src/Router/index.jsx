@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useRoutes } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate, useRoutes } from 'react-router-dom'
 import React from 'react'
 
 // 路由懒加载
@@ -9,6 +9,10 @@ const NoteList = React.lazy(() => import('../pages/NoteList'))
 const NoteDetail = React.lazy(() => import('../pages/NoteDetail'))
 const NotePublic = React.lazy(() => import('../pages/NotePublic'))
 const Search = React.lazy(() => import('../pages/Search'))
+const NoteEdit = React.lazy(() => import('../pages/NoteEdit'))
+const NoteLike = React.lazy(() => import('../pages/NoteLike'))
+const NoteStatistics = React.lazy(() => import('../pages/NoteStatistics'))
+const Personal = React.lazy(() => import('../pages/Personal'))
 
 const routes = [
     {
@@ -42,6 +46,22 @@ const routes = [
     {
         path: '/search',
         element: <Search />
+    },
+    {
+        path: '/noteEdit',
+        element: <NoteEdit />
+    },
+    {
+        path: '/noteLike',
+        element: <NoteLike />
+    },
+    {
+        path: '/noteStatistics',
+        element: <NoteStatistics />
+    },
+    {
+        path: '/personal',
+        element: <Personal />
     }
 ]
 

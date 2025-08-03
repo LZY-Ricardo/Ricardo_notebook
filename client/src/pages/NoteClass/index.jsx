@@ -45,7 +45,7 @@ export default function NoteClass() {
           </div>
           <div>
             <Edit className={styles['icon']} onClick={() => navigate('/notePublic')}/>
-            <LikeO className={styles['icon']} />
+            <LikeO className={styles['icon']} onClick={() => navigate('/noteLike')} />
             <Search className={styles['icon']} onClick={() => navigate('/search')} />
           </div>
         </header>

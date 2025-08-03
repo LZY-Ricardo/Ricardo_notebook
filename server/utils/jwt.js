@@ -15,10 +15,14 @@ function verify() { // 返回一个函数体
                 // console.log(decoded);
                 if (decoded.id) { // 合法
                     ctx.userId = decoded.id
+                    console.log(11);
+                    
                     await next()
                 }
             } catch (error) {
                 ctx.status = 401
+                console.log(222);
+                
                 ctx.body = {
                     code: '0',
                     msg: '登录失效',
