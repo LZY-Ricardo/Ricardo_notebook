@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.less'
-import { Button, Input, Form, NavBar } from 'react-vant'
+import { Button, Input, Form, NavBar, Dialog } from 'react-vant'
 import { useNavigate } from 'react-router';
 import axios from '@/api'
 import { toast } from 'react-hot-toast';
@@ -10,7 +10,7 @@ export default function Personal() {
     const [form] = Form.useForm()
 
     const onFinish = values => {
-        console.log('提交的参数:', values);
+        // console.log('提交的参数:', values);
         axios.post('/user/update', values).then(res => {
             toast.success('修改成功')
             // 修改成功，将 token 存储在 localStorage 中
@@ -36,7 +36,16 @@ export default function Personal() {
             <div className={styles['form-container']}>
                 <Form
                     form={form}
-                    onFinish={onFinish}
+                    onFinish={async () => {
+                        await Dialog.confirm({
+                            title: '确认修改',
+                            message: '确认修改个人信息',
+                            onCancel: () => console.log('cancel'),
+                            onConfirm: () => {
+                                onFinish(form.getFieldsValue())
+                            },
+                          })    
+                    }}
                     footer={
                         <div style={{ margin: '16px 16px 0' }}>
                             <Button round nativeType='submit' type='primary' block>

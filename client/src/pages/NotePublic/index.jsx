@@ -28,7 +28,7 @@ export default function NotePublic() {
 
   const onPublish = () => {
     // console.log(html);
-    console.log(noteImg);
+    // console.log(noteImg);
     
     if (html.length <= 11) {
       toast.error('请输入内容')

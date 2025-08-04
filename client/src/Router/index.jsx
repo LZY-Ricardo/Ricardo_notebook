@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useRoutes } from 'react-router-dom'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 // 路由懒加载
 const Login = React.lazy(() => import('../pages/Login'))
@@ -62,13 +62,13 @@ const routes = [
     {
         path: '/personal',
         element: <Personal />
-    }
+    },
 ]
 
 function WrapperRoutes() {
     // useRoutes 这个 hook 函数只能用在路由组件中, 也就是说, 该组件不能被抛出
     let ele = useRoutes(routes) // <Routes></Routes>
-    return ele
+    return <Suspense fallback={<div>Loading...</div>}>{ele}</Suspense>
 }
 
 export default function WrapperRouter() {

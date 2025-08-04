@@ -10,7 +10,7 @@ export default function NoteLike() {
     const [likeNoteList, setLikeNoteList] = useState([])
     useEffect(() => {
         axios.get('/noteLike').then(res => {
-            console.log(res);
+            // console.log(res);
             setLikeNoteList(res.data)
         })
     }, [])

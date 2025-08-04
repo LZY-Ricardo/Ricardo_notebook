@@ -42,7 +42,7 @@ export default function NoteEdit() {
         axios.get(`findNoteDetailById?id=${id}`).then(res => {
             // console.log(res.data);
             const imgUrl = res.data.note_img || '';
-            console.log(imgUrl);
+            // console.log(imgUrl);
             setUrl(imgUrl)
             setHtml(res.data.note_content)
             setCategory(res.data.note_type)
@@ -61,7 +61,7 @@ export default function NoteEdit() {
             type: category,
             img: noteImg,
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             toast.success('更新成功')
             navigate(-1)
         })

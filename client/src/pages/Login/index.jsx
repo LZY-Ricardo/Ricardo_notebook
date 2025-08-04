@@ -13,7 +13,7 @@ export default function Login() {
   const onFinish = values => {
     axios.post('/user/login', values).then(res => {
       toast.success('登录成功')
-      console.log(res);
+      // console.log(res);
       // 登录成功，将 token 存储在 localStorage 中
       localStorage.setItem('access_token', res.access_token)
       localStorage.setItem('refresh_token', res.refresh_token)

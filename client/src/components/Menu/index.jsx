@@ -37,10 +37,10 @@ export default function Menu({ setShowMenu }) {
                         <BarChartO />
                         <span>日记统计</span>
                     </li>
-                    <li className={styles['menu-list-item']}>
+                    {/* <li className={styles['menu-list-item']}>
                         <IconFont name='icon-yejianmoshi1' />
                         <span>夜间模式</span>
-                    </li>
+                    </li> */}
                     <li className={styles['menu-list-item']} onClick={() => {
                         localStorage.removeItem('userInfo')
                         localStorage.removeItem('access_token')

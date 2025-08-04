@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from './index.module.less'
-import { ArrowLeft } from '@react-vant/icons';
+import { ArrowLeft,createFromIconfontCN } from '@react-vant/icons';
 import { useNavigate, useSearchParams } from 'react-router';
 import axios from '@/api';
-import { createFromIconfontCN } from '@react-vant/icons'
 import { toast } from 'react-hot-toast';
+import { Cell, Dialog } from 'react-vant'
 
 const IconFont = createFromIconfontCN(
   'https://at.alicdn.com/t/c/font_4985740_hhxb3gm8gtj.js'
@@ -83,7 +83,14 @@ export default function NoteDetail() {
       <div
         className={styles['note-delete']}
         onClick={() =>
-          onDelete()
+          Dialog.confirm({
+            title: '确认删除',
+            message: '确认删除该笔记',
+            onCancel: () => console.log('cancel'),
+            onConfirm: async () => {
+              await onDelete()
+            },
+          })
         }
       >
         <IconFont name='icon-shanchu' />

@@ -18,7 +18,7 @@ export default function NoteList() {
 
     const getData = async (page, size) => {
         axios.get(`/findNoteListByType?note_type=${category}&page=${page}&size=${size}`).then(res => {
-            console.log(res)
+            // console.log(res)
             setNoteList(res.data)
         })
     }
