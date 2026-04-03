@@ -1,6 +1,6 @@
 # Mobile Adaptation
-rem is relative to the page's root font size  
-For example: root font is 10px, 1rem = 10px, a container is set to a width of 10rem. When the user uses a larger phone screen, we need to increase the root font size.
+rem is relative to the root font size of the page.  
+For example: if the root font size is 10px, then 1rem = 10px. A container set to 10rem width will need the root font size to be increased when users use larger phone screens.
 
 ```
 10px        11.04px     37.5px     41.1px 
@@ -12,41 +12,48 @@ For example: root font is 10px, 1rem = 10px, a container is set to a width of 10
 react-vant
 
 # CSS Preprocessor
-less
+Less
 
 # HTML Tag Style Reset
 reset.css
 
-# Route Parameter Passing
-1. `navigate('/home?id=1')` `useSearchParams()` // Get the current route information  
-2. `navigate('/home/1')` – declare `path: '/home/:id'` in route configuration `useParams()` // Get the current route parameters  
-3. `navigate('/home/1', { state: { id: 1 } })` `useLocation()` // Get the current route information; parameters are not shown in the URL
+# Routing Parameters
+1. `navigate('/home?id=1')` `useSearchParams()` // Get current route information  
+2. `navigate('/home/1')` (declare route with `path: '/home/:id'`) `useParams()` // Get current route parameters  
+3. 
+```js
+navigate('/home/1', {
+    state: {
+        id: 1,
+    }
+})
+```
+`useLocation()` // Get current route information; parameters won’t appear in the URL
 
 # Project Overview
-- Install routing library `react-router-dom`
+- Install routing: `react-router-dom`
 
-1. Centralized route configuration  
-   - Place all route definitions in a single file for easy management.  
-   - Route lazy loading: wrap each route component with `React.lazy`. This loads the component only when the user navigates to that route, rather than loading all route components on page entry (to improve home page load speed).
+1. **Centralized routing configuration**
+   - Put all route definitions in a single file for easy management.
+   - **Route lazy loading**: wrap each route component with `React.lazy` so that the component loads only when the user navigates to it, instead of loading all route components on page entry (to improve the home page load speed).
 
-2. Develop login page  
-   - CSS style isolation `xxx.module.less`  
-   - Send login request with axios (XMLHttpRequest, fetch)  
+2. **Develop the login page**
+   - CSS style isolation: `xxx.module.less`
+   - Send login request with `axios` (or `XMLHttpRequest`, `fetch`):  
      ```js
      axios.post('/login')
      ```
 
-3. Because `react-vant` Toast component is not compatible with React 19, we use the third‑party `react-hot-toast` component.
+3. Because `react-vant`'s Toast component is not compatible with React 19, we use the third‑party `react-hot-toast` component.
 
-4. Login authentication  
-   - When a user is not logged in and accesses the home page, the home page will send a request to the backend during loading.  
-   - The backend generates a token in the login API, returns it to the frontend, which stores it locally in the browser.  
-   - The frontend must include this token in all subsequent requests for backend validation. If validation fails, the backend returns a **401** status code; upon receiving **401**, the frontend knows the user is not logged in and redirects to the login page.  
-
-   - The above implements authentication, but the token expires after a set period, requiring the user to log in again, which yields a poor experience. Implement a seamless token refresh.  
-   - The backend returns a long token and a short token in the login API. The short token is used for permission validation, while the long token is used to obtain a new short token and a new long token after the short token expires, replacing the old long token.
+4. **Login authentication**
+   - When an unauthenticated user accesses the home page, the home page will send a request to the backend during loading.
+   - The backend generates a token at the login endpoint and returns it to the client, which stores the token locally in the browser.
+   - The front‑end must include this token in all subsequent requests for backend verification. If verification fails, the backend returns a `401` status code; upon receiving `401`, the client knows the user is not logged in and redirects to the login page.
+   - The above implements authentication, but the token expires after a set period, requiring the user to log in again, which is a poor experience. Implement a seamless token refresh.
+   - The backend returns a long‑lived token and a short‑lived token at login. The short token is used for permission checks, while the long token is used to obtain a new short token (and a new long token) when the short token expires.
 
 5. Home page `noteClass`
 
-6. List page `noteList`  
-   - Manually encapsulate pull‑to‑refresh behavior: the pull component listens to touch events, using the finger's Y‑axis movement to control the container's downward translation, revealing the “pull to refresh” text at the top. When the finger is released, it triggers the parent component's function to re‑request data.
+6. List page `noteList`
+   - Manually encapsulate pull‑to‑refresh: the pull component listens for touch events; based on the finger’s movement along the Y‑axis, it controls the container’s downward translation to reveal the “pull to refresh” header. When the finger is released, it triggers a function in the parent component to re‑
