@@ -1,0 +1,19 @@
+repo: LZY-Ricardo/Ricardo_notebook
+baseBranch: main
+baseLanguage: zh-CN
+targetLanguages:
+  - en
+include:
+  - README.md
+  - server/readme.md
+  - client/README.md
+ignoreFile: .github-global-ignore
+outputRoot: translations
+model:
+  provider: openrouter
+  id: openrouter/auto
+readmeNavigation:
+  enabled: true
+pullRequest:
+  branch: gittrans/main
+  titleTemplate: "docs: update translations"
