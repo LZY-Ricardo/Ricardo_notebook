@@ -2,11 +2,11 @@ repo: LZY-Ricardo/Ricardo_notebook
 baseBranch: main
 baseLanguage: zh-CN
 targetLanguages:
-  - en
+  - zh-TW
 include:
   - README.md
-  - server/readme.md
   - client/README.md
+  - server/readme.md
 ignoreFile: .github-global-ignore
 outputRoot: translations
 model:
