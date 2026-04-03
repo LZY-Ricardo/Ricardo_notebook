@@ -1,6 +1,6 @@
 <!-- gittrans:lang-switch:start -->
 ## 🌐 Translations
-[Traditional Chinese](./translations/zh-TW/README.md)
+[Spanish](./translations/es/README.md)
 <!-- gittrans:lang-switch:end -->
 
 一个移动端的网页笔记本项目 

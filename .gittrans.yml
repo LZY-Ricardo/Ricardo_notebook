@@ -2,7 +2,7 @@ repo: LZY-Ricardo/Ricardo_notebook
 baseBranch: main
 baseLanguage: zh-CN
 targetLanguages:
-  - zh-TW
+  - es
 include:
   - README.md
   - client/README.md
